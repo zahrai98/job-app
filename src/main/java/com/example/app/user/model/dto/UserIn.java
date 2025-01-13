@@ -1,6 +1,7 @@
 package com.example.app.user.model.dto;
 
 import com.example.app.user.model.UserEntity;
+import com.example.app.user.validation.ValidPassword;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,13 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserIn {
     private String username;
-    @NotBlank
-    @NotNull
-    @Size(min = 6, max = 20)
+    @ValidPassword
     private String password; // TODO validation
     @NotBlank
     @NotNull
-    private String email; // TODO validation  send email
+    @Email
+    private String email;
 
     public UserEntity convertToEntity(UserEntity userEntity) {
         if (userEntity == null) {
