@@ -1,5 +1,6 @@
 package com.example.app.job.model;
 
+import com.example.app.job.model.enums.JobApplicationStatus;
 import com.example.app.job.model.enums.JobType;
 import com.example.app.user.model.UserEntity;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +21,8 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "job_position")
-//@Where(clause = "is_deleted = false")
-//@SQLDelete(sql = "UPDATE todo SET is_deleted = true WHERE id=?")
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE todo SET is_deleted = true WHERE id=?")
 public class JobPositionEntity {
     @Id
     @SequenceGenerator(name = "job_position_sequence", sequenceName = "job_position_sequence", allocationSize = 1)
@@ -65,5 +67,12 @@ public class JobPositionEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private UserEntity owner;
+
+    @PrePersist
+    private void prePersist() {
+        if (isDeleted == null) {
+            isDeleted = false;
+        }
+    }
 
 }

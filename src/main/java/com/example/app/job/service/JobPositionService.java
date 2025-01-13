@@ -15,6 +15,7 @@ import com.example.app.user.model.UserEntity;
 import com.example.app.user.model.dto.CandidateInEdit;
 import com.example.app.user.model.dto.CandidateOut;
 import com.example.app.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public class JobPositionService {
         this.jobPositionRepository = jobPositionRepository;
     }
 
+    @Transactional
     public JobPositionDtoOut create(JobPositionDtoIn jobPositionDtoIn) {
         UserEntity user = userRepository.findById(jobPositionDtoIn.getOwnerId()).orElseThrow(
                 () -> new SystemException(HttpStatus.NOT_FOUND, "owner not found ", 404));
@@ -57,6 +59,7 @@ public class JobPositionService {
         return jobPositionRepository.findAll(Specification.where(JobPositionSpecification.search(jobPositionFilter)), pageable).stream().map(JobPositionDtoOut::new).toList();
     }
 
+    @Transactional
     public JobPositionDtoOut update(Long id, JobPositionDtoInEdit jobPositionDtoInEdit) {
         JobPositionEntity jobPositionEntity = jobPositionDtoInEdit.convertToEntity(jobPositionRepository.findById(id).orElseThrow(() ->
                 new SystemException(HttpStatus.NOT_FOUND, "job position not found", 404)));
