@@ -7,7 +7,6 @@ import com.example.app.user.model.CandidateEntity;
 import com.example.app.user.model.UserEntity;
 import com.example.app.user.model.dto.CandidateIn;
 import com.example.app.user.model.dto.CandidateOut;
-import com.example.app.user.model.dto.UserOut;
 import com.example.app.user.repository.CandidateRepository;
 import com.example.app.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
