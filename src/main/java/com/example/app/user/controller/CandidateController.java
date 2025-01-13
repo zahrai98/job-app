@@ -3,7 +3,6 @@ package com.example.app.user.controller;
 import com.example.app.common.dto.PageableDto;
 import com.example.app.user.model.dto.*;
 import com.example.app.user.service.CandidateService;
-import com.example.app.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +34,20 @@ public class CandidateController {
     @GetMapping(path = "/{candidateId}")
     public ResponseEntity<CandidateOut> getById(@PathVariable(name = "candidateId") Long candidateId) {
         return ResponseEntity.ok(candidateService.getById(candidateId));
+    }
+
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<CandidateOut> getByUserId(@PathVariable(name = "userId") Long userId) {
+        return ResponseEntity.ok(candidateService.getByUserId(userId));
+    }
+
+    @PutMapping(value = "{candidateId}")
+    public ResponseEntity<CandidateOut> update(@PathVariable("candidateId") Long candidateId, @RequestBody @Valid CandidateInEdit candidateInEdit) {
+        return ResponseEntity.ok(candidateService.update(candidateId, candidateInEdit));
+    }
+
+    @DeleteMapping(value = "{candidateId}")
+    public void delete(@PathVariable("candidateId") Long candidateId) {
+        candidateService.delete(candidateId);
     }
 }

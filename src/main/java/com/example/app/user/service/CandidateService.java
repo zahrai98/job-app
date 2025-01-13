@@ -6,6 +6,7 @@ import com.example.app.job.repository.JobSkillsRepository;
 import com.example.app.user.model.CandidateEntity;
 import com.example.app.user.model.UserEntity;
 import com.example.app.user.model.dto.CandidateIn;
+import com.example.app.user.model.dto.CandidateInEdit;
 import com.example.app.user.model.dto.CandidateOut;
 import com.example.app.user.repository.CandidateRepository;
 import com.example.app.user.repository.UserRepository;
@@ -45,10 +46,25 @@ public class CandidateService {
         return new CandidateOut(candidateRepository.findByIdWithExperiences(id).orElseThrow(() ->
                 new SystemException(HttpStatus.NOT_FOUND, "candidate not found", 404)));
     }
+    public CandidateOut getByUserId(Long id) {
+        return new CandidateOut(candidateRepository.findByUserIdWithExperiences(id).orElseThrow(() ->
+                new SystemException(HttpStatus.NOT_FOUND, "candidate not found", 404)));
+    }
 
     public List<CandidateOut> getAll(PageableDto pageableDto) {
         Pageable pageable = PageRequest.of(pageableDto.getPage() - 1, pageableDto.getSize());
         Page<CandidateEntity> data = candidateRepository.findAll(pageable);
         return data.stream().map(CandidateOut::new).collect(Collectors.toList());
+    }
+
+    public CandidateOut update(Long id, CandidateInEdit candidateInEdit) {
+        CandidateEntity candidateEntity = candidateInEdit.convertToEntity(candidateRepository.findById(id).orElseThrow(() ->
+                new SystemException(HttpStatus.NOT_FOUND, "candidate not found", 404)));
+        return new CandidateOut(candidateRepository.save(candidateEntity));
+    }
+    public void delete(Long id) {
+        candidateRepository.findById(id).orElseThrow(() ->
+                new SystemException(HttpStatus.NOT_FOUND, "candidate not found", 404));
+        candidateRepository.deleteById(id);
     }
 }
