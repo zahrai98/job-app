@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +19,8 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "job_position")
+//@Where(clause = "is_deleted = false")
+//@SQLDelete(sql = "UPDATE todo SET is_deleted = true WHERE id=?")
 public class JobPositionEntity {
     @Id
     @SequenceGenerator(name = "job_position_sequence", sequenceName = "job_position_sequence", allocationSize = 1)
@@ -38,12 +42,8 @@ public class JobPositionEntity {
     @Column(name = "location")
     private String location;
 
-//    @Column(name = "job_type")
-//    @ElementCollection(fetch = FetchType.LAZY)
-//    @Enumerated(EnumType.STRING)
-//    @CollectionTable(name = "job_position_type",
-//            joinColumns = @JoinColumn(name = "job_position_id"))
-//    private Set<JobType> jobType;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     @Column(name = "requirements")
     @ElementCollection(fetch = FetchType.LAZY)
