@@ -3,7 +3,10 @@ package com.example.app.user.service;
 import com.example.app.common.dto.PageableDto;
 import com.example.app.configs.exceptions.CreateUserException;
 import com.example.app.configs.exceptions.SystemException;
+import com.example.app.user.model.UserEntity;
 import com.example.app.user.model.dto.UserIn;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.app.user.model.dto.UserOut;
 import com.example.app.user.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
@@ -31,4 +34,10 @@ public class UserService {
         Pageable pageable = PageRequest.of(pageableDto.getPage() - 1, pageableDto.getSize());
         return userRepository.findAll(pageable).stream().map(UserOut::new).collect(Collectors.toList());
     }
+
+    public UserOut getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new UserOut((UserEntity) authentication.getPrincipal());
+    }
+
 }

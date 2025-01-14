@@ -33,4 +33,14 @@ public class UserController {
     public ResponseEntity<UserOut> getById(@PathVariable(name = "userId") Long userId) {
         return ResponseEntity.ok(userService.getById(userId));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserOut> authenticatedUser() {
+        return ResponseEntity.ok(userService.getAuthenticatedUser());
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+        return ResponseEntity.ok("not implemented yet ... need to create black list of tokens and check back list for auth"); //TODO
+    }
 }

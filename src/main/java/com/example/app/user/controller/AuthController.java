@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
+    // TODO creste refresh token and extend token after expire time if user was using system
     private final AuthService authService;
     private final JwtService jwtService;
 
